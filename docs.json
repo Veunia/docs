@@ -68,5 +68,13 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
+  },
+  "thumbnails": {
+    "fonts": {
+      "family": "Inter"
+    }
+  },
+  "styling": {
+    "eyebrows": "breadcrumbs"
   }
 }
