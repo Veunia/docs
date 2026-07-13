@@ -75,6 +75,10 @@
     }
   },
   "styling": {
-    "eyebrows": "breadcrumbs"
+    "eyebrows": "breadcrumbs",
+    "latex": true
+  },
+  "interaction": {
+    "drilldown": true
   }
 }
