@@ -1,0 +1,75 @@
+---
+title: "Règles métier"
+description: "Comportements et règles fonctionnelles de l'application"
+---
+
+## Inscription et désinscription
+
+Un utilisateur connecté peut s'inscrire à un événement en un tap. S'il est déjà inscrit, le bouton affiche **J'annule**. La mise à jour est temps réel via un listener Firestore (`onSnapshot`).
+
+## Événement complet (FULL)
+
+Lorsque le nombre max de joueurs est atteint :
+
+- Le bouton **Je m'inscris** est désactivé et grisé.
+- Le label **COMPLET** est affiché.
+
+## Événements passés
+
+Les événements passés ne sont pas affichés dans la liste d'accueil. Ils seront accessibles via un futur onglet **Historique** (phase 2).
+
+## Créateur = propriétaire
+
+- Le créateur peut modifier ou annuler l'événement.
+- Les autres joueurs ne peuvent que s'inscrire ou se désinscrire.
+
+## Compteur temps réel
+
+Le nombre de joueurs inscrits sur la carte et dans le détail se met à jour en temps réel via un `onSnapshot` Firestore.
+
+## Authentification
+
+- L'app est réservée aux membres du groupe.
+- Connexion par email/mot de passe.
+- Pas de création de compte publique : les comptes sont créés manuellement via la console Firebase.
+
+## Barre d'affluence
+
+La barre d'affluence est une barre de progression horizontale segmentée, colorée, avec un marqueur de position actuelle. Une icône 🏀 apparaît sur la barre au niveau **OPTIMAL** pour signaler le sweet spot.
+
+### Demi-terrain (seuil ~10 joueurs)
+
+| Nb joueurs | Label | Couleur |
+| --- | --- | --- |
+| 0 – 5 | ANNULÉE | Gris |
+| 6 – 10 | OPTIMAL | Vert |
+| 11 – 16 | DENSE | Orange |
+| 17 – 20 | TRÈS DENSE | Rouge |
+| 20\+ | FULL | Rouge foncé |
+
+### Tout-terrain (seuil ~16 joueurs)
+
+| Nb joueurs | Label | Couleur |
+| --- | --- | --- |
+| 0 – 9 | ANNULÉ | Gris |
+| 10 – 16 | OPTIMAL | Vert |
+| 17 – 20 | DENSE | Orange |
+| 21 – 25 | TRÈS DENSE | Rouge |
+| 25\+ | FULL | Rouge foncé |
+
+### Couleur de bordure de la carte
+
+| État | Bordure |
+| --- | --- |
+| ANNULÉ | Grise |
+| OPTIMAL | Verte |
+| DENSE | Orange |
+| TRÈS DENSE / FULL | Rouge |
+
+## Hors scope (phase 1)
+
+- **Graphisme final** : couleurs et typographies sont des placeholders, centralisés dans `src/theme.ts`.
+- **Chat intégré** : remplacé par WhatsApp.
+- **Joueurs blessés** : `isInjured` est en base mais non affiché.
+- **Notifications push** : architecture prévue, non implémentée.
+- **Historique des matchs** : phase 2.

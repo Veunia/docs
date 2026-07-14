@@ -80,6 +80,20 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Untitled Tab",
+        "pages": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart",
+              "stack-technique",
+              "regles-metier"
+            ]
+          }
+        ]
       }
     ]
   },
