@@ -1,0 +1,88 @@
+---
+title: "Stack technique"
+description: "Technologies et outils utilisés pour construire l'application"
+---
+
+## Vue d'ensemble
+
+L'application est une app mobile pour un groupe d'amis qui jouent au basket ensemble. Elle permet de voir les prochains créneaux réservés, s'y inscrire en un tap, et suivre l'affluence en temps réel.
+
+## Technologies
+
+| Couche | Choix |
+| --- | --- |
+| Framework | React Native \+ Expo SDK (managed workflow) |
+| Navigation | Expo Router (file-based) |
+| Backend / DB | Firebase (Firestore \+ Authentication) |
+| Auth | Firebase Auth — connexion par email/mot de passe |
+| État global | Zustand (léger, sans boilerplate) |
+| Notifications | Expo Notifications (optionnel, phase 2) |
+
+## Structure des données Firestore
+
+### Collection `events`
+
+```text
+events/{eventId}
+  ├── title: string            // "Session Fred"
+  ├── date: Timestamp
+  ├── startTime: string        // "19:30"
+  ├── endTime: string          // "21:00"
+  ├── terrainType: "demi" | "full"
+  ├── location: string         // ex: "Gymnase Diderot"
+  ├── category: "interieur" | "exterieur" | "tournoi"
+  ├── createdBy: userId
+  ├── creatorName: string
+  ├── maxPlayers: number       // défaut 20 pour full, 12 pour demi
+  ├── players: [
+  │     { userId, displayName, avatarUrl }
+  │   ]
+  └── status: "active" | "cancelled"
+```
+
+### Collection `users`
+
+```text
+users/{userId}
+  ├── displayName: string
+  ├── avatarUrl: string
+  ├── position: string         // "Meneur", "Ailier", etc. (optionnel)
+  ├── matchesPlayed: number
+  ├── cancellations: number
+  └── isInjured: boolean       // phase 2
+```
+
+## Organisation du code
+
+```text
+/
+├── app/
+│   ├── index.tsx             # Accueil (liste + onglets)
+│   ├── event/[id].tsx        # Détail événement
+│   ├── create-event.tsx      # Formulaire création
+│   ├── profile.tsx           # Profil joueur
+│   └── login.tsx             # Écran de connexion
+├── components/
+│   ├── EventCard.tsx
+│   ├── OccupancyBar.tsx
+│   ├── PlayerAvatar.tsx
+│   └── TabBar.tsx
+├── hooks/
+│   ├── useEvents.ts
+│   └── useAuth.ts
+├── services/
+│   ├── firebase.ts
+│   ├── eventsService.ts
+│   └── usersService.ts
+├── store/
+│   └── useStore.ts           # Zustand global state
+├── src/
+│   └── theme.ts              # Tokens de couleur, typographie, spacing
+└── firebase.config.ts        # Config Firebase (via .env)
+```
+
+## Notes
+
+- Le fichier `src/theme.ts` doit exporter : `colors`, `typography`, `spacing`, `borderRadius`. Aucune couleur ne doit être hardcodée ailleurs dans le code.
+- Indexer Firestore sur `(category, date)` pour les requêtes filtrées par onglet.
+- Utiliser `expo-image-picker` pour la photo de profil.
